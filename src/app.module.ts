@@ -6,6 +6,7 @@ import { FilesystemModule } from './modules/filesystem/filesystem.module.js';
 import { IntakeModule } from './modules/intake/intake.module.js';
 import { TriageModule } from './modules/triage/triage.module.js';
 import { BookingModule } from './modules/booking/booking.module.js';
+import { MatchingModule } from './modules/matching/matching.module.js';
 import { SystemHealthCheck } from './health/system.health.js';
 
 /**
@@ -35,7 +36,8 @@ import { SystemHealthCheck } from './health/system.health.js';
     FilesystemModule,
     IntakeModule,
     TriageModule,
-    BookingModule
+    BookingModule,
+    MatchingModule
   ],
   providers: [
     // Health Checks
