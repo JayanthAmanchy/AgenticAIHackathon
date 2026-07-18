@@ -36,6 +36,31 @@ export class TriageService {
       detectedRedFlags
     );
 
+    const timestamp = new Date().toISOString();
+
+    // Store preliminary triage result if recordId is provided
+    if (recordId) {
+      const predictedCondition = candidateConditions.length > 0
+        ? candidateConditions[0].name
+        : 'General Medical Evaluation Required';
+      const urgencyLevel = getUrgencyLevel(confidenceScore);
+
+      this.dataService.storeTriageResult({
+        patientId,
+        recordId,
+        predictedCondition,
+        urgencyLevel,
+        detectedRedFlags: detectedRedFlags.map(flag => ({
+          id: flag.id,
+          description: flag.description,
+          severity: flag.severity,
+          category: flag.category
+        })),
+        confidenceScore,
+        timestamp
+      });
+    }
+
     return {
       patientId,
       recordId,
@@ -43,7 +68,7 @@ export class TriageService {
       detectedRedFlags,
       candidateConditions,
       confidenceScore,
-      timestamp: new Date().toISOString()
+      timestamp
     };
   }
 
