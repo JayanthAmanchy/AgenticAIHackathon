@@ -117,6 +117,7 @@ export class TriageService {
     }
 
     return {
+      recordId,
       urgencyLevel,
       severityScore,
       rationale,

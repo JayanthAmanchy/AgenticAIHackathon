@@ -48,6 +48,7 @@ export interface ScoreUrgencyInput {
  * Output from score-urgency tool
  */
 export interface UrgencyResult {
+  recordId?: string;
   urgencyLevel: 'low' | 'medium' | 'high' | 'emergency';
   severityScore: number; // 0-1 scale
   rationale: string;

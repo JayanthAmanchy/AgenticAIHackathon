@@ -26,6 +26,28 @@ let TriageService = class TriageService {
         const confidenceScore = calculateSeverityScore(detectedRedFlags);
         // Generate candidate conditions based on keywords and patterns
         const candidateConditions = this.generateCandidateConditions(symptomDescription, detectedRedFlags);
+        const timestamp = new Date().toISOString();
+        // Store preliminary triage result if recordId is provided
+        if (recordId) {
+            const predictedCondition = candidateConditions.length > 0
+                ? candidateConditions[0].name
+                : 'General Medical Evaluation Required';
+            const urgencyLevel = getUrgencyLevel(confidenceScore);
+            this.dataService.storeTriageResult({
+                patientId,
+                recordId,
+                predictedCondition,
+                urgencyLevel,
+                detectedRedFlags: detectedRedFlags.map(flag => ({
+                    id: flag.id,
+                    description: flag.description,
+                    severity: flag.severity,
+                    category: flag.category
+                })),
+                confidenceScore,
+                timestamp
+            });
+        }
         return {
             patientId,
             recordId,
@@ -33,7 +55,7 @@ let TriageService = class TriageService {
             detectedRedFlags,
             candidateConditions,
             confidenceScore,
-            timestamp: new Date().toISOString()
+            timestamp
         };
     }
     /**
@@ -73,6 +95,7 @@ let TriageService = class TriageService {
             });
         }
         return {
+            recordId,
             urgencyLevel,
             severityScore,
             rationale,
