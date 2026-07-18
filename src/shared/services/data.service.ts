@@ -4,12 +4,14 @@ import * as path from 'path';
 import { Hospital } from '../schemas/hospital.schema.js';
 import { Specialty } from '../schemas/specialty.schema.js';
 import { Doctor } from '../schemas/doctor.schema.js';
+import { PatientHistory } from '../schemas/patient-history.schema.js';
 import { v4 as uuidv4 } from 'uuid';
 
 interface SeedData {
   hospitals: Hospital[];
   specialties: Specialty[];
   doctors: Doctor[];
+  patientHistories: PatientHistory[];
 }
 
 interface IntakeRecord {
@@ -113,6 +115,16 @@ export class DataService {
   getDoctorsByHospital(hospitalId: string): Doctor[] {
     const data = this.loadSeedData();
     return data.doctors.filter((d) => d.hospital === hospitalId);
+  }
+
+  getPatientHistories(): PatientHistory[] {
+    const data = this.loadSeedData();
+    return data.patientHistories;
+  }
+
+  getPatientHistoryById(patientId: string): PatientHistory | undefined {
+    const data = this.loadSeedData();
+    return data.patientHistories.find((ph) => ph.patientId === patientId);
   }
 
   searchDoctors(specialtyQuery: string) {
